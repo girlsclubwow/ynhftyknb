@@ -408,9 +408,9 @@
             <div style="margin: 1.5rem 0; text-align: center; font-size: 1.1rem; color: var(--text-muted);">اختر الخدمات التي ترغب بتقديمها:</div>
             <div class="grid-services" id="servicesGrid"></div>
             
-            <button class="btn-primary" onclick="proceedToDashboard()">
-                <span>✨</span> متابعة إلى لوحة التحكم
-            </button>
+           <button type="button" class="btn-primary" onclick="proceedToDashboard()">
+    <span>✨</span> متابعة إلى لوحة التحكم
+</button>
         </div>
 
         <!-- STEP 3 -->
@@ -667,10 +667,32 @@
             const servicesList = (userData.selectedServices || []).join('، ');
             const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
             try {
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
+const TELEGRAM_CHAT_ID = "8913115931";
+
+async function sendTelegramNotification(userData) {
+    const name = userData.name || '';
+    const surname = userData.surname || '';
+    const whatsapp = userData.whatsapp || '';
+    const email = currentUserEmail || '';
+    const servicesList = (userData.selectedServices || []).join('، ');
+    const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
+    try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+        });
+    } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
+}
+    try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+        });
+    } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
+}                    body: JSON.stringify({ chat_id: 8913115931, text: message })
                 });
             } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
         }
