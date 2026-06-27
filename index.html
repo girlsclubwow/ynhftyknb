@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ... same styles you already have ... */
         :root {
             --bg-gradient: linear-gradient(135deg, #0b1120 0%, #0f172a 50%, #0a1628 100%);
             --card-bg: rgba(20, 30, 48, 0.65);
@@ -218,11 +217,12 @@
     </div>
 
     <script>
-        // ====================== ALL FUNCTIONS (CORRECTED) ======================
+        // ====== متغيرات عامة ======
         let currentUserEmail = '';
         let selectedFileName = '';
         let selectedFileBase64 = '';
 
+        // ====== رفع الملف ======
         function handleFileSelect(input) {
             const file = input.files[0];
             if (!file) return;
@@ -233,6 +233,7 @@
             reader.readAsDataURL(file);
         }
 
+        // ====== الخدمات ======
         const services = [
             { id: "netflix", name: "Netflix", img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
             { id: "spotify", name: "Spotify", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" },
@@ -257,7 +258,7 @@
             });
         }
 
-        // Firebase config
+        // ====== Firebase ======
         const firebaseConfig = {
             apiKey: "AIzaSyCuTwhswf_p1q-yolRYQwf6_emwDvbiRjw",
             authDomain: "dhpay-2a79f.firebaseapp.com",
@@ -312,7 +313,7 @@
             }
         }
 
-        // ----- LOGIN FUNCTION (NOW IT WILL BE DEFINED) -----
+        // ====== دوال الأزرار (معرفة على window) ======
         window.loginUser = async function() {
             try {
                 const emailInput = document.getElementById('emailInput');
@@ -341,7 +342,6 @@
             }
         };
 
-        // ----- PROCEED TO DASHBOARD -----
         window.proceedToDashboard = async function() {
             try {
                 const name = document.getElementById('firstName').value.trim();
@@ -356,7 +356,7 @@
                 if (selectedFileName) userData.idCardName = selectedFileName;
                 if (selectedFileBase64) userData.idCardData = selectedFileBase64;
                 await saveUserData(currentUserEmail, userData);
-                // Send Telegram notification (wrapped to avoid blocking)
+                // محاولة إرسال إشعار تيليجرام (لن يؤثر إذا فشل)
                 try { await sendTelegramNotification(userData); } catch(e) {}
                 document.getElementById('step-profile').classList.add('hidden');
                 document.getElementById('step-dashboard').classList.remove('hidden');
@@ -368,7 +368,7 @@
             }
         };
 
-        // Render dashboard
+        // ====== لوحة التحكم ======
         async function renderDashboard(serviceIds, userData) {
             const container = document.getElementById('dashboardContainer');
             container.innerHTML = '';
@@ -435,9 +435,9 @@
             document.getElementById('grandTotalDisplay').innerHTML = `💰 المجموع الكلي المورد: ${grandTotal} دج`;
         }
 
-        // Telegram notification (PROPERLY WRITTEN)
+        // ====== إشعار تيليجرام (النسخة الصحيحة) ======
         const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
-        const TELEGRAM_CHAT_ID = "8434762095";  // your correct chat id
+        const TELEGRAM_CHAT_ID = "8434762095";
 
         async function sendTelegramNotification(userData) {
             const name = userData.name || '';
@@ -453,7 +453,7 @@
             });
         }
 
-        // Restore session on load
+        // ====== استعادة الجلسة ======
         window.addEventListener('DOMContentLoaded', async function() {
             try {
                 await firebaseReady;
