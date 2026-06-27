@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>DHPay - منصة الموردين</title>
+    <!-- Google Fonts: Cairo (يدعم العربية بشكل أنيق) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0b1120 0%, #0f172a 50%, #0a1628 100%);
+            --card-bg: rgba(20, 30, 48, 0.65);
+            --card-border: rgba(0, 180, 216, 0.15);
+            --primary: #00b4d8;
+            --primary-hover: #0096c7;
+            --secondary: #0077b6;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --shadow-sm: 0 8px 20px rgba(0,0,0,0.3);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.5);
+            --radius: 1.2rem;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 1.5rem;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.5s ease;
+        }
+
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--radius);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow-sm);
+        }
+        header img {
+            height: 48px;
+            width: auto;
+            transition: transform var(--transition);
+        }
+        header img:hover { transform: scale(1.05); }
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to left, var(--primary), #ade8f4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 2rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition);
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-message {
+            background: rgba(0, 180, 216, 0.12);
+            border-right: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            animation: pulseGlow 2s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 8px rgba(0,180,216,0.15); }
+            to { box-shadow: 0 0 20px rgba(0,180,216,0.3); }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        input, select {
+            padding: 0.9rem 1.2rem;
+            border-radius: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all var(--transition);
+            outline: none;
+        }
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,180,216,0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 700;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all var(--transition);
+            width: 100%;
+            box-shadow: 0 8px 18px rgba(0,180,216,0.3);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0,180,216,0.45);
+            filter: brightness(1.1);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 14px rgba(0,180,216,0.35);
+        }
+
+        .grid-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.02);
+            border: 2px solid transparent;
+            border-radius: 1rem;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+        .service-card.selected {
+            border-color: var(--primary);
+            background: rgba(0, 180, 216, 0.12);
+            box-shadow: 0 0 20px rgba(0,180,216,0.25);
+        }
+        .service-card img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+            transition: transform var(--transition);
+        }
+        .service-card:hover img { transform: scale(1.1); }
+        .service-card span {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .grid-services-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .dashboard-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 1.2rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all var(--transition);
+        }
+        .dashboard-item:hover {
+            border-color: rgba(0,180,216,0.2);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+        }
+
+        .dash-service-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .dash-service-header img {
+            width: 32px;
+            height: 32px;
+            border-radius: 0.4rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .small-input {
+            flex: 1;
+            min-width: 70px;
+            padding: 0.7rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.7rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        .small-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 0.8rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all var(--transition);
+            box-shadow: 0 6px 15px rgba(34,197,94,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(34,197,94,0.45);
+        }
+
+        .total-display {
+            margin-top: 2rem;
+            background: rgba(0,0,0,0.25);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+        }
+
+        .hidden { display: none !important; }
+
+        #file-upload-wrap {
+            border: 2px dashed rgba(255,255,255,0.15);
+            padding: 1.5rem;
+            border-radius: 0.9rem;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all var(--transition);
+            background: rgba(255,255,255,0.02);
+        }
+        #file-upload-wrap:hover {
+            border-color: var(--primary);
+            background: rgba(0,180,216,0.05);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.2rem;
+                gap: 0.5rem;
+            }
+            header h1 { font-size: 1.5rem; }
+            .section-box { padding: 1.5rem; }
+            .grid-services { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+            .grid-services-dashboard { grid-template-columns: 1fr; }
+            .btn-primary { font-size: 1rem; padding: 0.8rem 1.5rem; }
+            .welcome-message { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .grid-services { grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+            .service-card img { width: 38px; height: 38px; }
+            .service-card span { font-size: 0.7rem; }
+            .form-row { flex-direction: column; }
+        }
+    </style>
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <img src="dhpay-logo.jpg" alt="DHPay Logo">
+            <h1>DHPay Dashboard</h1>
+        </header>
+
+        <!-- STEP 1 -->
+        <div id="step-login" class="section-box">
+            <div class="welcome-message">مرحباً بك في DHPay</div>
+            <div class="input-group">
+                <label>البريد الإلكتروني (لحفظ بياناتك)</label>
+                <input type="email" id="emailInput" placeholder="example@mail.com" required>
+            </div>
+            <button class="btn-primary" onclick="loginUser()">
+                <span>🚀</span> دخول / التسجيل
+            </button>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="step-profile" class="section-box hidden">
+            <h2 style="margin-bottom: 1.5rem; font-weight: 700;">بيانات المورد الشخصية</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;" class="profile-grid">
+                <div class="input-group"><label>الاسم</label><input type="text" id="firstName"></div>
+                <div class="input-group"><label>اللقب</label><input type="text" id="lastName"></div>
+            </div>
+            <div class="input-group"><label>رقم الواتساب</label><input type="text" id="whatsappNum" placeholder="+213 000 00 00 00"></div>
+            
+            <div class="input-group">
+                <label>إرفاق صورة بطاقة التعريف الوطنية</label>
+                <div id="file-upload-wrap" onclick="document.getElementById('idCardFile').click()">
+                    <p>📎 اضغط هنا لرفع الصورة</p>
+                    <input type="file" id="idCardFile" accept="image/*" style="display:none" onchange="handleFileSelect(this)">
+                    <div id="fileNameDisplay" style="margin-top:0.5rem; color: white; font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <div style="margin: 1.5rem 0; text-align: center; font-size: 1.1rem; color: var(--text-muted);">اختر الخدمات التي ترغب بتقديمها:</div>
+            <div class="grid-services" id="servicesGrid"></div>
+            
+            <button class="btn-primary" onclick="proceedToDashboard()">
+                <span>✨</span> متابعة إلى لوحة التحكم
+            </button>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="step-dashboard" class="section-box hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <h2>مرحباً بك في لوحة تحكم المورد</h2>
+                <button onclick="location.reload()" style="background: transparent; border:1px solid rgba(255,255,255,0.2); color:white; padding: 0.5rem 1.2rem; border-radius: 2rem; cursor:pointer;">تغيير الحساب</button>
+            </div>
+            <div style="margin: 1rem 0; color: var(--text-muted);" id="profileSummary"></div>
+            <div id="dashboardContainer" class="grid-services-dashboard"></div>
+            <div class="total-display" id="grandTotalDisplay">💰 المجموع الكلي: 0 دج</div>
+        </div>
+    </div>
+
+    <!-- السكربت بدون تغيير -->
+    <script>
+        let currentUserEmail = '';
+        let selectedFileName = '';
+        let selectedFileBase64 = '';
+
+        function handleFileSelect(input) {
+            const file = input.files[0];
+            if (!file) return;
+            selectedFileName = file.name;
+            document.getElementById('fileNameDisplay').innerText = `✅ تم اختيار: ${file.name}`;
+            const reader = new FileReader();
+            reader.onload = function(e) { selectedFileBase64 = e.target.result; };
+            reader.readAsDataURL(file);
+        }
+
+        const services = [
+            { id: "netflix", name: "Netflix", img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
+            { id: "spotify", name: "Spotify", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" },
+            { id: "chatgpt", name: "ChatGPT", img: "https://cdn-icons-png.flaticon.com/512/11865/11865326.png" },
+            { id: "canva", name: "Canva", img: "https://www.fortunekart.in/wp-content/uploads/2026/05/Canva-Pro-Premium.jpg" },
+            { id: "youtube", name: "YouTube Premium", img: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" },
+            { id: "prime", name: "Prime Video", img: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Amazon_Prime_Video_logo_%282024%29.svg" },
+            { id: "shahid", name: "Shahid", img: "https://upload.wikimedia.org/wikipedia/commons/6/62/Shahid_new_Logo.jpg" },
+            { id: "snapplus", name: "Snap Plus", img: "https://storage.googleapis.com/takeapp/media/cm1m97rco00010dl2759icqp1.png" }
+        ];
+
+        function renderServices() {
+            const container = document.getElementById('servicesGrid');
+            container.innerHTML = '';
+            services.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                card.dataset.id = service.id;
+                card.innerHTML = `<img src="${service.img}" alt="${service.name}"><span>${service.name}</span>`;
+                card.onclick = () => card.classList.toggle('selected');
+                container.appendChild(card);
+            });
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCuTwhswf_p1q-yolRYQwf6_emwDvbiRjw",
+            authDomain: "dhpay-2a79f.firebaseapp.com",
+            projectId: "dhpay-2a79f",
+            storageBucket: "dhpay-2a79f.firebasestorage.app",
+            messagingSenderId: "389871891834",
+            appId: "1:389871891834:web:b3509c33fe9dc5f25bd2c3",
+            measurementId: "G-16FBHJQGSC"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        let firebaseReady = new Promise((resolve) => {
+            auth.signInAnonymously()
+                .then(() => { console.log("✅ Firebase مهيأ بنجاح"); resolve(); })
+                .catch(err => { console.error("❌ خطأ في تهيئة Firebase:", err); resolve(); });
+        });
+        try { db.enablePersistence().catch(err => console.warn('Persistence error:', err.code)); } catch(e) {}
+
+        function getLocalData(email) { const key = `dhpay_${email}`; const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; }
+        function setLocalData(email, data) { localStorage.setItem(`dhpay_${email}`, JSON.stringify(data)); }
+
+        async function getUserData(email) {
+            if (!email) return null;
+            try {
+                await firebaseReady;
+                const docRef = db.collection('users').doc(email);
+                const docSnap = await docRef.get();
+                return docSnap.exists ? docSnap.data() : getLocalData(email);
+            } catch (e) {
+                console.warn("⚠️ Firestore read failed, using local storage.", e.message);
+                return getLocalData(email);
+            }
+        }
+
+        async function saveUserData(email, data) {
+            if (!email) return;
+            setLocalData(email, data);
+            try { await firebaseReady; await db.collection('users').doc(email).set(data, { merge: true }); console.log("✅ Saved to Firestore"); }
+            catch (e) { console.warn("⚠️ Firestore save failed, saved locally only.", e.message); }
+        }
+
+        async function loginUser() {
+            try {
+                const emailInput = document.getElementById('emailInput');
+                const email = emailInput.value.trim();
+                if (!email) { alert('الرجاء إدخال البريد الإلكتروني'); return; }
+                currentUserEmail = email;
+                sessionStorage.setItem('dhpay_session_email', email);
+                const userData = await getUserData(email);
+                if (userData) {
+                    document.getElementById('firstName').value = userData.name || '';
+                    document.getElementById('lastName').value = userData.surname || '';
+                    document.getElementById('whatsappNum').value = userData.whatsapp || '';
+                    if(userData.idCardName) document.getElementById('fileNameDisplay').innerText = `✅ تم رفع ${userData.idCardName}`;
+                    if(userData.selectedServices) {
+                        const allCards = document.querySelectorAll('#servicesGrid .service-card');
+                        allCards.forEach(card => {
+                            if(userData.selectedServices.includes(card.dataset.id)) card.classList.add('selected');
+                        });
+                    }
+                }
+                document.getElementById('step-login').classList.add('hidden');
+                document.getElementById('step-profile').classList.remove('hidden');
+            } catch (error) {
+                console.error("خطأ في دالة loginUser:", error);
+                alert("حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.");
+            }
+        }
+
+        async function proceedToDashboard() {
+            const name = document.getElementById('firstName').value.trim();
+            const surname = document.getElementById('lastName').value.trim();
+            const whatsapp = document.getElementById('whatsappNum').value.trim();
+            if (!name || !surname || !whatsapp) { alert('يرجى ملء جميع البيانات'); return; }
+            const selectedCards = document.querySelectorAll('.service-card.selected');
+            const selectedSvcs = [...selectedCards].map(card => card.dataset.id);
+            if (selectedSvcs.length === 0) { alert('اختر خدمة واحدة على الأقل'); return; }
+            let userData = (await getUserData(currentUserEmail)) || {};
+            userData.name = name; userData.surname = surname; userData.whatsapp = whatsapp; userData.selectedServices = selectedSvcs;
+            if (selectedFileName) userData.idCardName = selectedFileName;
+            if (selectedFileBase64) userData.idCardData = selectedFileBase64;
+            await saveUserData(currentUserEmail, userData);
+            await sendTelegramNotification(userData);
+            document.getElementById('step-profile').classList.add('hidden');
+            document.getElementById('step-dashboard').classList.remove('hidden');
+            document.getElementById('profileSummary').innerText = `الاسم: ${name} ${surname} | واتساب: ${whatsapp} | العروض المقدمة: ${selectedSvcs.length}`;
+            await renderDashboard(selectedSvcs, userData);
+        }
+
+        async function renderDashboard(serviceIds, userData) {
+            const container = document.getElementById('dashboardContainer');
+            container.innerHTML = '';
+            if (!userData.servicesData) userData.servicesData = {};
+            serviceIds.forEach(svcId => {
+                const service = services.find(s => s.id === svcId);
+                if (!service) return;
+                const serviceData = userData.servicesData[svcId] || { price: '', quantity: '', duration: '' };
+                const dashItem = document.createElement('div');
+                dashItem.className = 'dashboard-item';
+                dashItem.innerHTML = `
+                    <div class="dash-service-header">
+                        <img src="${service.img}" alt="${service.name}">
+                        <span>${service.name}</span>
+                    </div>
+                    <div class="form-row">
+                        <input type="number" id="price_${svcId}" class="small-input" placeholder="السعر" value="${serviceData.price}" onchange="saveServiceData('${svcId}')">
+                        <input type="number" id="qty_${svcId}" class="small-input" placeholder="الكمية" value="${serviceData.quantity}" onchange="saveServiceData('${svcId}')">
+                        <input type="text" id="dur_${svcId}" class="small-input" placeholder="المدة" value="${serviceData.duration}" onchange="saveServiceData('${svcId}')">
+                    </div>
+                    <button class="btn-confirm" onclick="confirmService('${svcId}')">✔️ تأكيد الحساب</button>
+                    <div id="result_${svcId}" style="margin-top: 10px; color: #22c55e; font-weight:600;"></div>
+                `;
+                container.appendChild(dashItem);
+                if (serviceData.price && serviceData.quantity) {
+                    const total = parseFloat(serviceData.price) * parseFloat(serviceData.quantity);
+                    document.getElementById(`result_${svcId}`).innerHTML = `✅ إجمالي هذه الخدمة: ${total} دج`;
+                }
+            });
+            updateGrandTotal();
+        }
+
+        window.saveServiceData = async function(svcId) {
+            let userData = (await getUserData(currentUserEmail)) || {};
+            const price = document.getElementById(`price_${svcId}`).value;
+            const qty = document.getElementById(`qty_${svcId}`).value;
+            const dur = document.getElementById(`dur_${svcId}`).value;
+            if(!userData.servicesData) userData.servicesData = {};
+            userData.servicesData[svcId] = { duration: dur, price: price, quantity: qty };
+            await saveUserData(currentUserEmail, userData);
+            updateGrandTotal();
+        }
+
+        window.confirmService = async function(svcId) {
+            const price = parseFloat(document.getElementById(`price_${svcId}`).value) || 0;
+            const qty = parseFloat(document.getElementById(`qty_${svcId}`).value) || 0;
+            const total = price * qty;
+            document.getElementById(`result_${svcId}`).innerHTML = `✅ إجمالي هذه الخدمة: ${total} دج`;
+            await window.saveServiceData(svcId);
+            updateGrandTotal();
+        }
+
+        async function updateGrandTotal() {
+            let grandTotal = 0;
+            let userData = await getUserData(currentUserEmail);
+            if (userData && userData.servicesData) {
+                for (let key in userData.servicesData) {
+                    const item = userData.servicesData[key];
+                    const price = parseFloat(item.price) || 0;
+                    const qty = parseFloat(item.quantity) || 0;
+                    grandTotal += (price * qty);
+                }
+            }
+            document.getElementById('grandTotalDisplay').innerHTML = `💰 المجموع الكلي المورد: ${grandTotal} دج`;
+        }
+
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                await firebaseReady;
+                const savedEmail = sessionStorage.getItem('dhpay_session_email');
+                if (savedEmail) {
+                    document.getElementById('emailInput').value = savedEmail;
+                    currentUserEmail = savedEmail;
+                    const userData = await getUserData(savedEmail);
+                    if (userData) {
+                        document.getElementById('firstName').value = userData.name || '';
+                        document.getElementById('lastName').value = userData.surname || '';
+                        document.getElementById('whatsappNum').value = userData.whatsapp || '';
+                        if(userData.idCardName) document.getElementById('fileNameDisplay').innerText = `✅ تم رفع ${userData.idCardName}`;
+                        const selectedServices = userData.selectedServices || [];
+                        if (selectedServices.length > 0) {
+                            document.getElementById('step-login').classList.add('hidden');
+                            document.getElementById('step-profile').classList.add('hidden');
+                            document.getElementById('step-dashboard').classList.remove('hidden');
+                            document.getElementById('profileSummary').innerText = `الاسم: ${userData.name} ${userData.surname} | واتساب: ${userData.whatsapp} | العروض المقدمة: ${selectedServices.length}`;
+                            await renderDashboard(selectedServices, userData);
+                        } else {
+                            document.getElementById('step-login').classList.add('hidden');
+                            document.getElementById('step-profile').classList.remove('hidden');
+                        }
+                    } else {
+                        document.getElementById('step-login').classList.add('hidden');
+                        document.getElementById('step-profile').classList.remove('hidden');
+                    }
+                }
+            } catch (error) { console.error("خطأ في استرجاع الجلسة:", error); }
+        });
+
+        renderServices();
+
+        const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
+        const TELEGRAM_CHAT_ID = "8913115931";
+
+        async function sendTelegramNotification(userData) {
+            const name = userData.name || '';
+            const surname = userData.surname || '';
+            const whatsapp = userData.whatsapp || '';
+            const email = currentUserEmail || '';
+            const servicesList = (userData.selectedServices || []).join('، ');
+            const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+                });
+            } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
+        }
+    </script>
+</body>
+</html>
