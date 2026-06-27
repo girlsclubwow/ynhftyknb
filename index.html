@@ -427,275 +427,254 @@
 
     <!-- السكربت بدون تغيير -->
     <script>
-        let currentUserEmail = '';
-        let selectedFileName = '';
-        let selectedFileBase64 = '';
+    let currentUserEmail = '';
+    let selectedFileName = '';
+    let selectedFileBase64 = '';
 
-        function handleFileSelect(input) {
-            const file = input.files[0];
-            if (!file) return;
-            selectedFileName = file.name;
-            document.getElementById('fileNameDisplay').innerText = `✅ تم اختيار: ${file.name}`;
-            const reader = new FileReader();
-            reader.onload = function(e) { selectedFileBase64 = e.target.result; };
-            reader.readAsDataURL(file);
-        }
+    function handleFileSelect(input) {
+        const file = input.files[0];
+        if (!file) return;
+        selectedFileName = file.name;
+        document.getElementById('fileNameDisplay').innerText = `✅ تم اختيار: ${file.name}`;
+        const reader = new FileReader();
+        reader.onload = function(e) { selectedFileBase64 = e.target.result; };
+        reader.readAsDataURL(file);
+    }
 
-        const services = [
-            { id: "netflix", name: "Netflix", img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
-            { id: "spotify", name: "Spotify", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" },
-            { id: "chatgpt", name: "ChatGPT", img: "https://cdn-icons-png.flaticon.com/512/11865/11865326.png" },
-            { id: "canva", name: "Canva", img: "https://www.fortunekart.in/wp-content/uploads/2026/05/Canva-Pro-Premium.jpg" },
-            { id: "youtube", name: "YouTube Premium", img: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" },
-            { id: "prime", name: "Prime Video", img: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Amazon_Prime_Video_logo_%282024%29.svg" },
-            { id: "shahid", name: "Shahid", img: "https://upload.wikimedia.org/wikipedia/commons/6/62/Shahid_new_Logo.jpg" },
-            { id: "snapplus", name: "Snap Plus", img: "https://storage.googleapis.com/takeapp/media/cm1m97rco00010dl2759icqp1.png" }
-        ];
+    const services = [
+        { id: "netflix", name: "Netflix", img: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
+        { id: "spotify", name: "Spotify", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" },
+        { id: "chatgpt", name: "ChatGPT", img: "https://cdn-icons-png.flaticon.com/512/11865/11865326.png" },
+        { id: "canva", name: "Canva", img: "https://www.fortunekart.in/wp-content/uploads/2026/05/Canva-Pro-Premium.jpg" },
+        { id: "youtube", name: "YouTube Premium", img: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" },
+        { id: "prime", name: "Prime Video", img: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Amazon_Prime_Video_logo_%282024%29.svg" },
+        { id: "shahid", name: "Shahid", img: "https://upload.wikimedia.org/wikipedia/commons/6/62/Shahid_new_Logo.jpg" },
+        { id: "snapplus", name: "Snap Plus", img: "https://storage.googleapis.com/takeapp/media/cm1m97rco00010dl2759icqp1.png" }
+    ];
 
-        function renderServices() {
-            const container = document.getElementById('servicesGrid');
-            container.innerHTML = '';
-            services.forEach(service => {
-                const card = document.createElement('div');
-                card.className = 'service-card';
-                card.dataset.id = service.id;
-                card.innerHTML = `<img src="${service.img}" alt="${service.name}"><span>${service.name}</span>`;
-                card.onclick = () => card.classList.toggle('selected');
-                container.appendChild(card);
-            });
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCuTwhswf_p1q-yolRYQwf6_emwDvbiRjw",
-            authDomain: "dhpay-2a79f.firebaseapp.com",
-            projectId: "dhpay-2a79f",
-            storageBucket: "dhpay-2a79f.firebasestorage.app",
-            messagingSenderId: "389871891834",
-            appId: "1:389871891834:web:b3509c33fe9dc5f25bd2c3",
-            measurementId: "G-16FBHJQGSC"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        let firebaseReady = new Promise((resolve) => {
-            auth.signInAnonymously()
-                .then(() => { console.log("✅ Firebase مهيأ بنجاح"); resolve(); })
-                .catch(err => { console.error("❌ خطأ في تهيئة Firebase:", err); resolve(); });
+    function renderServices() {
+        const container = document.getElementById('servicesGrid');
+        container.innerHTML = '';
+        services.forEach(service => {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            card.dataset.id = service.id;
+            card.innerHTML = `<img src="${service.img}" alt="${service.name}"><span>${service.name}</span>`;
+            card.onclick = () => card.classList.toggle('selected');
+            container.appendChild(card);
         });
-        try { db.enablePersistence().catch(err => console.warn('Persistence error:', err.code)); } catch(e) {}
+    }
 
-        function getLocalData(email) { const key = `dhpay_${email}`; const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; }
-        function setLocalData(email, data) { localStorage.setItem(`dhpay_${email}`, JSON.stringify(data)); }
+    const firebaseConfig = {
+        apiKey: "AIzaSyCuTwhswf_p1q-yolRYQwf6_emwDvbiRjw",
+        authDomain: "dhpay-2a79f.firebaseapp.com",
+        projectId: "dhpay-2a79f",
+        storageBucket: "dhpay-2a79f.firebasestorage.app",
+        messagingSenderId: "389871891834",
+        appId: "1:389871891834:web:b3509c33fe9dc5f25bd2c3",
+        measurementId: "G-16FBHJQGSC"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
 
-        async function getUserData(email) {
-            if (!email) return null;
-            try {
-                await firebaseReady;
-                const docRef = db.collection('users').doc(email);
-                const docSnap = await docRef.get();
-                return docSnap.exists ? docSnap.data() : getLocalData(email);
-            } catch (e) {
-                console.warn("⚠️ Firestore read failed, using local storage.", e.message);
-                return getLocalData(email);
+    let firebaseReady = new Promise((resolve) => {
+        auth.signInAnonymously()
+            .then(() => { console.log("✅ Firebase مهيأ بنجاح"); resolve(); })
+            .catch(err => { console.error("❌ خطأ في تهيئة Firebase:", err); resolve(); });
+    });
+    try { db.enablePersistence().catch(err => console.warn('Persistence error:', err.code)); } catch(e) {}
+
+    function getLocalData(email) { const key = `dhpay_${email}`; const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; }
+    function setLocalData(email, data) { localStorage.setItem(`dhpay_${email}`, JSON.stringify(data)); }
+
+    async function getUserData(email) {
+        if (!email) return null;
+        try {
+            await firebaseReady;
+            const docRef = db.collection('users').doc(email);
+            const docSnap = await docRef.get();
+            return docSnap.exists ? docSnap.data() : getLocalData(email);
+        } catch (e) {
+            console.warn("⚠️ Firestore read failed, using local storage.", e.message);
+            return getLocalData(email);
+        }
+    }
+
+    async function saveUserData(email, data) {
+        if (!email) return;
+        setLocalData(email, data);
+        try { await firebaseReady; await db.collection('users').doc(email).set(data, { merge: true }); console.log("✅ Saved to Firestore"); }
+        catch (e) { console.warn("⚠️ Firestore save failed, saved locally only.", e.message); }
+    }
+
+    async function loginUser() {
+        try {
+            const emailInput = document.getElementById('emailInput');
+            const email = emailInput.value.trim();
+            if (!email) { alert('الرجاء إدخال البريد الإلكتروني'); return; }
+            currentUserEmail = email;
+            sessionStorage.setItem('dhpay_session_email', email);
+            const userData = await getUserData(email);
+            if (userData) {
+                document.getElementById('firstName').value = userData.name || '';
+                document.getElementById('lastName').value = userData.surname || '';
+                document.getElementById('whatsappNum').value = userData.whatsapp || '';
+                if(userData.idCardName) document.getElementById('fileNameDisplay').innerText = `✅ تم رفع ${userData.idCardName}`;
+                if(userData.selectedServices) {
+                    const allCards = document.querySelectorAll('#servicesGrid .service-card');
+                    allCards.forEach(card => {
+                        if(userData.selectedServices.includes(card.dataset.id)) card.classList.add('selected');
+                    });
+                }
+            }
+            document.getElementById('step-login').classList.add('hidden');
+            document.getElementById('step-profile').classList.remove('hidden');
+        } catch (error) {
+            console.error("خطأ في دالة loginUser:", error);
+            alert("حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.");
+        }
+    }
+
+    async function proceedToDashboard() {
+        const name = document.getElementById('firstName').value.trim();
+        const surname = document.getElementById('lastName').value.trim();
+        const whatsapp = document.getElementById('whatsappNum').value.trim();
+        if (!name || !surname || !whatsapp) { alert('يرجى ملء جميع البيانات'); return; }
+        const selectedCards = document.querySelectorAll('.service-card.selected');
+        const selectedSvcs = [...selectedCards].map(card => card.dataset.id);
+        if (selectedSvcs.length === 0) { alert('اختر خدمة واحدة على الأقل'); return; }
+        let userData = (await getUserData(currentUserEmail)) || {};
+        userData.name = name; userData.surname = surname; userData.whatsapp = whatsapp; userData.selectedServices = selectedSvcs;
+        if (selectedFileName) userData.idCardName = selectedFileName;
+        if (selectedFileBase64) userData.idCardData = selectedFileBase64;
+        await saveUserData(currentUserEmail, userData);
+        await sendTelegramNotification(userData);
+        document.getElementById('step-profile').classList.add('hidden');
+        document.getElementById('step-dashboard').classList.remove('hidden');
+        document.getElementById('profileSummary').innerText = `الاسم: ${name} ${surname} | واتساب: ${whatsapp} | العروض المقدمة: ${selectedSvcs.length}`;
+        await renderDashboard(selectedSvcs, userData);
+    }
+
+    async function renderDashboard(serviceIds, userData) {
+        const container = document.getElementById('dashboardContainer');
+        container.innerHTML = '';
+        if (!userData.servicesData) userData.servicesData = {};
+        serviceIds.forEach(svcId => {
+            const service = services.find(s => s.id === svcId);
+            if (!service) return;
+            const serviceData = userData.servicesData[svcId] || { price: '', quantity: '', duration: '' };
+            const dashItem = document.createElement('div');
+            dashItem.className = 'dashboard-item';
+            dashItem.innerHTML = `
+                <div class="dash-service-header">
+                    <img src="${service.img}" alt="${service.name}">
+                    <span>${service.name}</span>
+                </div>
+                <div class="form-row">
+                    <input type="number" id="price_${svcId}" class="small-input" placeholder="السعر" value="${serviceData.price}" onchange="saveServiceData('${svcId}')">
+                    <input type="number" id="qty_${svcId}" class="small-input" placeholder="الكمية" value="${serviceData.quantity}" onchange="saveServiceData('${svcId}')">
+                    <input type="text" id="dur_${svcId}" class="small-input" placeholder="المدة" value="${serviceData.duration}" onchange="saveServiceData('${svcId}')">
+                </div>
+                <button class="btn-confirm" onclick="confirmService('${svcId}')">✔️ تأكيد الحساب</button>
+                <div id="result_${svcId}" style="margin-top: 10px; color: #22c55e; font-weight:600;"></div>
+            `;
+            container.appendChild(dashItem);
+            if (serviceData.price && serviceData.quantity) {
+                const total = parseFloat(serviceData.price) * parseFloat(serviceData.quantity);
+                document.getElementById(`result_${svcId}`).innerHTML = `✅ إجمالي هذه الخدمة: ${total} دج`;
+            }
+        });
+        updateGrandTotal();
+    }
+
+    window.saveServiceData = async function(svcId) {
+        let userData = (await getUserData(currentUserEmail)) || {};
+        const price = document.getElementById(`price_${svcId}`).value;
+        const qty = document.getElementById(`qty_${svcId}`).value;
+        const dur = document.getElementById(`dur_${svcId}`).value;
+        if(!userData.servicesData) userData.servicesData = {};
+        userData.servicesData[svcId] = { duration: dur, price: price, quantity: qty };
+        await saveUserData(currentUserEmail, userData);
+        updateGrandTotal();
+    }
+
+    window.confirmService = async function(svcId) {
+        const price = parseFloat(document.getElementById(`price_${svcId}`).value) || 0;
+        const qty = parseFloat(document.getElementById(`qty_${svcId}`).value) || 0;
+        const total = price * qty;
+        document.getElementById(`result_${svcId}`).innerHTML = `✅ إجمالي هذه الخدمة: ${total} دج`;
+        await window.saveServiceData(svcId);
+        updateGrandTotal();
+    }
+
+    async function updateGrandTotal() {
+        let grandTotal = 0;
+        let userData = await getUserData(currentUserEmail);
+        if (userData && userData.servicesData) {
+            for (let key in userData.servicesData) {
+                const item = userData.servicesData[key];
+                const price = parseFloat(item.price) || 0;
+                const qty = parseFloat(item.quantity) || 0;
+                grandTotal += (price * qty);
             }
         }
+        document.getElementById('grandTotalDisplay').innerHTML = `💰 المجموع الكلي المورد: ${grandTotal} دج`;
+    }
 
-        async function saveUserData(email, data) {
-            if (!email) return;
-            setLocalData(email, data);
-            try { await firebaseReady; await db.collection('users').doc(email).set(data, { merge: true }); console.log("✅ Saved to Firestore"); }
-            catch (e) { console.warn("⚠️ Firestore save failed, saved locally only.", e.message); }
-        }
-
-        async function loginUser() {
-            try {
-                const emailInput = document.getElementById('emailInput');
-                const email = emailInput.value.trim();
-                if (!email) { alert('الرجاء إدخال البريد الإلكتروني'); return; }
-                currentUserEmail = email;
-                sessionStorage.setItem('dhpay_session_email', email);
-                const userData = await getUserData(email);
+    window.addEventListener('DOMContentLoaded', async function() {
+        try {
+            await firebaseReady;
+            const savedEmail = sessionStorage.getItem('dhpay_session_email');
+            if (savedEmail) {
+                document.getElementById('emailInput').value = savedEmail;
+                currentUserEmail = savedEmail;
+                const userData = await getUserData(savedEmail);
                 if (userData) {
                     document.getElementById('firstName').value = userData.name || '';
                     document.getElementById('lastName').value = userData.surname || '';
                     document.getElementById('whatsappNum').value = userData.whatsapp || '';
                     if(userData.idCardName) document.getElementById('fileNameDisplay').innerText = `✅ تم رفع ${userData.idCardName}`;
-                    if(userData.selectedServices) {
-                        const allCards = document.querySelectorAll('#servicesGrid .service-card');
-                        allCards.forEach(card => {
-                            if(userData.selectedServices.includes(card.dataset.id)) card.classList.add('selected');
-                        });
-                    }
-                }
-                document.getElementById('step-login').classList.add('hidden');
-                document.getElementById('step-profile').classList.remove('hidden');
-            } catch (error) {
-                console.error("خطأ في دالة loginUser:", error);
-                alert("حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.");
-            }
-        }
-
-        async function proceedToDashboard() {
-            const name = document.getElementById('firstName').value.trim();
-            const surname = document.getElementById('lastName').value.trim();
-            const whatsapp = document.getElementById('whatsappNum').value.trim();
-            if (!name || !surname || !whatsapp) { alert('يرجى ملء جميع البيانات'); return; }
-            const selectedCards = document.querySelectorAll('.service-card.selected');
-            const selectedSvcs = [...selectedCards].map(card => card.dataset.id);
-            if (selectedSvcs.length === 0) { alert('اختر خدمة واحدة على الأقل'); return; }
-            let userData = (await getUserData(currentUserEmail)) || {};
-            userData.name = name; userData.surname = surname; userData.whatsapp = whatsapp; userData.selectedServices = selectedSvcs;
-            if (selectedFileName) userData.idCardName = selectedFileName;
-            if (selectedFileBase64) userData.idCardData = selectedFileBase64;
-            await saveUserData(currentUserEmail, userData);
-            await sendTelegramNotification(userData);
-            document.getElementById('step-profile').classList.add('hidden');
-            document.getElementById('step-dashboard').classList.remove('hidden');
-            document.getElementById('profileSummary').innerText = `الاسم: ${name} ${surname} | واتساب: ${whatsapp} | العروض المقدمة: ${selectedSvcs.length}`;
-            await renderDashboard(selectedSvcs, userData);
-        }
-
-        async function renderDashboard(serviceIds, userData) {
-            const container = document.getElementById('dashboardContainer');
-            container.innerHTML = '';
-            if (!userData.servicesData) userData.servicesData = {};
-            serviceIds.forEach(svcId => {
-                const service = services.find(s => s.id === svcId);
-                if (!service) return;
-                const serviceData = userData.servicesData[svcId] || { price: '', quantity: '', duration: '' };
-                const dashItem = document.createElement('div');
-                dashItem.className = 'dashboard-item';
-                dashItem.innerHTML = `
-                    <div class="dash-service-header">
-                        <img src="${service.img}" alt="${service.name}">
-                        <span>${service.name}</span>
-                    </div>
-                    <div class="form-row">
-                        <input type="number" id="price_${svcId}" class="small-input" placeholder="السعر" value="${serviceData.price}" onchange="saveServiceData('${svcId}')">
-                        <input type="number" id="qty_${svcId}" class="small-input" placeholder="الكمية" value="${serviceData.quantity}" onchange="saveServiceData('${svcId}')">
-                        <input type="text" id="dur_${svcId}" class="small-input" placeholder="المدة" value="${serviceData.duration}" onchange="saveServiceData('${svcId}')">
-                    </div>
-                    <button class="btn-confirm" onclick="confirmService('${svcId}')">✔️ تأكيد الحساب</button>
-                    <div id="result_${svcId}" style="margin-top: 10px; color: #22c55e; font-weight:600;"></div>
-                `;
-                container.appendChild(dashItem);
-                if (serviceData.price && serviceData.quantity) {
-                    const total = parseFloat(serviceData.price) * parseFloat(serviceData.quantity);
-                    document.getElementById(`result_${svcId}`).innerHTML = `✅ إجمالي هذه الخدمة: ${total} دج`;
-                }
-            });
-            updateGrandTotal();
-        }
-
-        window.saveServiceData = async function(svcId) {
-            let userData = (await getUserData(currentUserEmail)) || {};
-            const price = document.getElementById(`price_${svcId}`).value;
-            const qty = document.getElementById(`qty_${svcId}`).value;
-            const dur = document.getElementById(`dur_${svcId}`).value;
-            if(!userData.servicesData) userData.servicesData = {};
-            userData.servicesData[svcId] = { duration: dur, price: price, quantity: qty };
-            await saveUserData(currentUserEmail, userData);
-            updateGrandTotal();
-        }
-
-        window.confirmService = async function(svcId) {
-            const price = parseFloat(document.getElementById(`price_${svcId}`).value) || 0;
-            const qty = parseFloat(document.getElementById(`qty_${svcId}`).value) || 0;
-            const total = price * qty;
-            document.getElementById(`result_${svcId}`).innerHTML = `✅ إجمالي هذه الخدمة: ${total} دج`;
-            await window.saveServiceData(svcId);
-            updateGrandTotal();
-        }
-
-        async function updateGrandTotal() {
-            let grandTotal = 0;
-            let userData = await getUserData(currentUserEmail);
-            if (userData && userData.servicesData) {
-                for (let key in userData.servicesData) {
-                    const item = userData.servicesData[key];
-                    const price = parseFloat(item.price) || 0;
-                    const qty = parseFloat(item.quantity) || 0;
-                    grandTotal += (price * qty);
-                }
-            }
-            document.getElementById('grandTotalDisplay').innerHTML = `💰 المجموع الكلي المورد: ${grandTotal} دج`;
-        }
-
-        window.addEventListener('DOMContentLoaded', async function() {
-            try {
-                await firebaseReady;
-                const savedEmail = sessionStorage.getItem('dhpay_session_email');
-                if (savedEmail) {
-                    document.getElementById('emailInput').value = savedEmail;
-                    currentUserEmail = savedEmail;
-                    const userData = await getUserData(savedEmail);
-                    if (userData) {
-                        document.getElementById('firstName').value = userData.name || '';
-                        document.getElementById('lastName').value = userData.surname || '';
-                        document.getElementById('whatsappNum').value = userData.whatsapp || '';
-                        if(userData.idCardName) document.getElementById('fileNameDisplay').innerText = `✅ تم رفع ${userData.idCardName}`;
-                        const selectedServices = userData.selectedServices || [];
-                        if (selectedServices.length > 0) {
-                            document.getElementById('step-login').classList.add('hidden');
-                            document.getElementById('step-profile').classList.add('hidden');
-                            document.getElementById('step-dashboard').classList.remove('hidden');
-                            document.getElementById('profileSummary').innerText = `الاسم: ${userData.name} ${userData.surname} | واتساب: ${userData.whatsapp} | العروض المقدمة: ${selectedServices.length}`;
-                            await renderDashboard(selectedServices, userData);
-                        } else {
-                            document.getElementById('step-login').classList.add('hidden');
-                            document.getElementById('step-profile').classList.remove('hidden');
-                        }
+                    const selectedServices = userData.selectedServices || [];
+                    if (selectedServices.length > 0) {
+                        document.getElementById('step-login').classList.add('hidden');
+                        document.getElementById('step-profile').classList.add('hidden');
+                        document.getElementById('step-dashboard').classList.remove('hidden');
+                        document.getElementById('profileSummary').innerText = `الاسم: ${userData.name} ${userData.surname} | واتساب: ${userData.whatsapp} | العروض المقدمة: ${selectedServices.length}`;
+                        await renderDashboard(selectedServices, userData);
                     } else {
                         document.getElementById('step-login').classList.add('hidden');
                         document.getElementById('step-profile').classList.remove('hidden');
                     }
+                } else {
+                    document.getElementById('step-login').classList.add('hidden');
+                    document.getElementById('step-profile').classList.remove('hidden');
                 }
-            } catch (error) { console.error("خطأ في استرجاع الجلسة:", error); }
-        });
+            }
+        } catch (error) { console.error("خطأ في استرجاع الجلسة:", error); }
+    });
 
-        renderServices();
+    renderServices();
 
-        const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
-        const TELEGRAM_CHAT_ID = "8913115931";
+    // 👇 التوكن الخاص بك (وهمي حاليًا، استبدله بالحقيقي إن أردت)
+    const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
+    const TELEGRAM_CHAT_ID = "8913115931";
 
-        async function sendTelegramNotification(userData) {
-            const name = userData.name || '';
-            const surname = userData.surname || '';
-            const whatsapp = userData.whatsapp || '';
-            const email = currentUserEmail || '';
-            const servicesList = (userData.selectedServices || []).join('، ');
-            const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
-            try {
-const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
-const TELEGRAM_CHAT_ID = "8913115931";
-
-async function sendTelegramNotification(userData) {
-    const name = userData.name || '';
-    const surname = userData.surname || '';
-    const whatsapp = userData.whatsapp || '';
-    const email = currentUserEmail || '';
-    const servicesList = (userData.selectedServices || []).join('، ');
-    const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
-    try {
-        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-        });
-    } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
-}
-    try {
-        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-        });
-    } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
-}                    body: JSON.stringify({ chat_id: 8913115931, text: message })
-                });
-            } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
-        }
-    </script>
+    async function sendTelegramNotification(userData) {
+        const name = userData.name || '';
+        const surname = userData.surname || '';
+        const whatsapp = userData.whatsapp || '';
+        const email = currentUserEmail || '';
+        const servicesList = (userData.selectedServices || []).join('، ');
+        const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
+        try {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+            });
+        } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
+    }
+</script>
 </body>
 </html>
