@@ -436,23 +436,8 @@
         }
 
         // ====== إشعار تيليجرام (النسخة الصحيحة) ======
-        const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
-        const TELEGRAM_CHAT_ID = "8434762095";
-
-        async function sendTelegramNotification(userData) {
-            const name = userData.name || '';
-            const surname = userData.surname || '';
-            const whatsapp = userData.whatsapp || '';
-            const email = currentUserEmail || '';
-            const servicesList = (userData.selectedServices || []).join('، ');
-            const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-            });
-        }
-
+       
+        
         // ====== استعادة الجلسة ======
         window.addEventListener('DOMContentLoaded', async function() {
             try {
