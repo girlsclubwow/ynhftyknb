@@ -667,20 +667,20 @@
     const TELEGRAM_CHAT_ID = "8434762095";  // ✅ تم التصحيح باستخدام الـ chat_id الصحيح
 
     async function sendTelegramNotification(userData) {
-        const name = userData.name || '';
-        const surname = userData.surname || '';
-        const whatsapp = userData.whatsapp || '';
-        const email = currentUserEmail || '';
-        const servicesList = (userData.selectedServices || []).join('، ');
-        const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
-        try {
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-            });
-        } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
-    }
+    const name = userData.name || '';
+    const surname = userData.surname || '';
+    const whatsapp = userData.whatsapp || '';
+    const email = currentUserEmail || '';
+    const servicesList = (userData.selectedServices || []).join('، ');
+    const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
+    try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
+        });
+    } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
+}
 </script>
 </body>
 </html>
