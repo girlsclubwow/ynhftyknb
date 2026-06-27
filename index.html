@@ -537,23 +537,29 @@
     }
 
     async function proceedToDashboard() {
-        const name = document.getElementById('firstName').value.trim();
-        const surname = document.getElementById('lastName').value.trim();
-        const whatsapp = document.getElementById('whatsappNum').value.trim();
-        if (!name || !surname || !whatsapp) { alert('يرجى ملء جميع البيانات'); return; }
-        const selectedCards = document.querySelectorAll('.service-card.selected');
-        const selectedSvcs = [...selectedCards].map(card => card.dataset.id);
-        if (selectedSvcs.length === 0) { alert('اختر خدمة واحدة على الأقل'); return; }
-        let userData = (await getUserData(currentUserEmail)) || {};
-        userData.name = name; userData.surname = surname; userData.whatsapp = whatsapp; userData.selectedServices = selectedSvcs;
-        if (selectedFileName) userData.idCardName = selectedFileName;
-        if (selectedFileBase64) userData.idCardData = selectedFileBase64;
-        await saveUserData(currentUserEmail, userData);
-        await sendTelegramNotification(userData);
-        document.getElementById('step-profile').classList.add('hidden');
-        document.getElementById('step-dashboard').classList.remove('hidden');
-        document.getElementById('profileSummary').innerText = `الاسم: ${name} ${surname} | واتساب: ${whatsapp} | العروض المقدمة: ${selectedSvcs.length}`;
-        await renderDashboard(selectedSvcs, userData);
+        try {
+            const name = document.getElementById('firstName').value.trim();
+            const surname = document.getElementById('lastName').value.trim();
+            const whatsapp = document.getElementById('whatsappNum').value.trim();
+            if (!name || !surname || !whatsapp) { alert('يرجى ملء جميع البيانات'); return; }
+            const selectedCards = document.querySelectorAll('.service-card.selected');
+            const selectedSvcs = [...selectedCards].map(card => card.dataset.id);
+            if (selectedSvcs.length === 0) { alert('اختر خدمة واحدة على الأقل'); return; }
+            let userData = (await getUserData(currentUserEmail)) || {};
+            userData.name = name; userData.surname = surname; userData.whatsapp = whatsapp; userData.selectedServices = selectedSvcs;
+            if (selectedFileName) userData.idCardName = selectedFileName;
+            if (selectedFileBase64) userData.idCardData = selectedFileBase64;
+            await saveUserData(currentUserEmail, userData);
+            // محاولة إرسال إشعار تيليجرام (لن تؤثر على الانتقال إذا فشلت)
+            try { await sendTelegramNotification(userData); } catch(e) {}
+            document.getElementById('step-profile').classList.add('hidden');
+            document.getElementById('step-dashboard').classList.remove('hidden');
+            document.getElementById('profileSummary').innerText = `الاسم: ${name} ${surname} | واتساب: ${whatsapp} | العروض المقدمة: ${selectedSvcs.length}`;
+            await renderDashboard(selectedSvcs, userData);
+        } catch (error) {
+            console.error(error);
+            alert("حدث خطأ: " + error.message);
+        }
     }
 
     async function renderDashboard(serviceIds, userData) {
@@ -656,9 +662,9 @@
 
     renderServices();
 
-    // 👇 التوكن الخاص بك (وهمي حاليًا، استبدله بالحقيقي إن أردت)
+    // ========== إعدادات تيليجرام (صحيحة) ==========
     const TELEGRAM_BOT_TOKEN = "8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ";
-    const TELEGRAM_CHAT_ID = "8913115931";
+    const TELEGRAM_CHAT_ID = "8434762095";  // ✅ تم التصحيح باستخدام الـ chat_id الصحيح
 
     async function sendTelegramNotification(userData) {
         const name = userData.name || '';
@@ -668,10 +674,10 @@
         const servicesList = (userData.selectedServices || []).join('، ');
         const message = `📌 تسجيل جديد:\n👤 الاسم: ${name} ${surname}\n📱 واتساب: ${whatsapp}\n📧 البريد: ${email}\n🛒 الخدمات: ${servicesList}`;
         try {
-            await fetch(`https://api.telegram.org/bot${8913115931:AAEezMHwdX77Xx8vO1Sr9Rt6S7f5XXu-utQ}/sendMessage`, {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: 8434762095, text: message })
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
             });
         } catch (e) { console.warn("لم يتم إرسال إشعار تيليجرام:", e); }
     }
